@@ -14,7 +14,7 @@ function onSearchForm(e) {
   query = e.currentTarget.searchQuery.value.trim();
   gallery.innerHTML = '';
   loadMoreBtn.classList.add('is-hidden');
-  //  newSerchQuery = e.currentTarget.searchQuery.value.trim();;
+  
   if (query === '') {
     Notiflix.Notify.failure(
       'The search string cannot be empty. Please specify your search query.'
@@ -29,7 +29,7 @@ function onSearchForm(e) {
           'Sorry, there are no images matching your search query. Please try again.'
         );
       } else {
-        console.log(data.hits);
+       
         renderMarkup(data.hits);
         lightbox.refresh();
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
