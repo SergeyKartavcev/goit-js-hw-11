@@ -13,7 +13,7 @@ function onSearchForm(e) {
   page = 1;
   query = e.currentTarget.searchQuery.value.trim();
   gallery.innerHTML = '';
-  loadMoreBtn.classList.add('is-hidden');
+ 
   
   if (query === '') {
     Notiflix.Notify.failure(
@@ -42,4 +42,4 @@ function onSearchForm(e) {
     .catch(error => console.log(error));
 }
 
-loadMoreBtn.addEventListener('click', onLoadMore);
+loadMoreBtn.addEventListener('click', onLoadMore)
