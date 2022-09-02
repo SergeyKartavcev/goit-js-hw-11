@@ -1,4 +1,5 @@
  import axios from "axios";
+ 
  axios.defaults.baseURL = 'https://pixabay.com/api/'
 
  export default async function fetchImages(query, page){
@@ -11,9 +12,11 @@
         orientation: 'horizontal',
         safesearch: true,
         page: page,
+        per_Page: 40
+        
     };
  const response = await axios.get('/', {params})
-
+console.log(response)
 return response
 }
 
