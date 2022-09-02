@@ -17,19 +17,18 @@ searchForm.addEventListener('submit', onSearchForm);
 let page = 1;
 let per_Page = 40;
 let query = "";
-let newSerchQuery="";
+
 function onSearchForm(e) {
   e.preventDefault();
   page = 1;
   query = e.currentTarget.searchQuery.value.trim();
- 
+
   if (query === '') {
     Notiflix.Notify.failure(
       'The search string cannot be empty. Please specify your search query.'
     );
     return;
   }
-
 
   fetchImages(query, page, per_Page)
     .then(({ data }) => {
@@ -42,16 +41,13 @@ function onSearchForm(e) {
         renderMarkup(data.hits);
         lightbox.refresh();
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-        // newSerchQuery = e.currentTarget.elements.value.trim();
- 
-        if (newSerchQuery===query){
-          Notiflix.Notify.failure("dkwwcwem")
-          return
-        }
-
+        
+      
         if (data.totalHits > 40) {
           loadMoreBtn.classList.remove('is-hidden');
         }
+       
+       
       }
     })
     .catch(error => console.log(error));
