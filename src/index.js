@@ -8,14 +8,14 @@ const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more');
 // import { searchForm, gallery, loadMoreBtn, page, perPage } from './js/refs';
-import onLoadMore from './js/onLoadMore'
+
 const lightbox = new SimpleLightbox('.gallery a').refresh();
 
 searchForm.addEventListener('submit', onSearchForm);
 
 // let newSerchQuery = "";
 let page = 1;
-
+let per_Page = 40;
 let query = "";
 let newSerchQuery="";
 function onSearchForm(e) {
@@ -34,7 +34,7 @@ if (newSerchQuery===e.currentTarget.searchQuery.value.trim()){
   return
 }
 newSerchQuery===e.currentTarget.searchQuery.value.trim()
-  fetchImages(query, page)
+  fetchImages(query, page, per_Page)
     .then(({ data }) => {
       if (data.totalHits === 0) {
         Notiflix.Notify.failure(
@@ -43,7 +43,6 @@ newSerchQuery===e.currentTarget.searchQuery.value.trim()
       } else {
         gallery.innerHTML = '';
         renderMarkup(data.hits);
-       
         lightbox.refresh();
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
         
@@ -55,14 +54,29 @@ newSerchQuery===e.currentTarget.searchQuery.value.trim()
     .catch(error => console.log(error));
 }
 
-// searchForm.addEventListener('submit', newRequest);
-// function newRequest(e){
-//   if(newSerchQuery===e.currentTarget.elements.value){
-//       Notiflix.Notify.failure("samcacmas")
-//       return
-//      }
-//      newSerchQuery===e.currentTarget.elements.value;
-// }
+
+
+
+ function onLoadMore(){
+ page += 1
+     
+       
+        fetchImages(query, page, per_Page)
+            .then(({ data }) => {
+              renderMarkup(data.hits)
+            lightbox.refresh()
+        
+        const totalPages = Math.ceil(data.totalHits / perPage)
+                if (page > totalPages) {
+                
+                loadMoreBtn.classList.add('is-hidden')
+            
+
+                Notiflix.Notify.failure('We are sorry, but you have reached the end of search results.')
+                }
+            })
+    .catch(error => (error))
+}
 
  loadMoreBtn.addEventListener('click', onLoadMore)
 
