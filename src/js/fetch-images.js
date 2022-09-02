@@ -10,9 +10,9 @@
         q: query,
         image_type: 'photo',
         orientation: 'horizontal',
-        safesearch: true,
+        safesearch: 'true',
         page: page,
-        per_Page: 40
+        // per_Page: 40
         
     };
  const response = await axios.get('/', {params})

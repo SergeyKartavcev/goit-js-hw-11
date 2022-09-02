@@ -19,13 +19,13 @@ const lightbox = new SimpleLightbox('.gallery a').refresh();
    page += 1;
    fetchImages(page)
             .then(({ data }) => {
-            if (totalHits > per_Page) {
+            if (data.totalHits > 40) {
                 loadMoreBtn.classList.remove('is-hidden')
                 renderMarkup(data.hits)
                 lightbox.refresh()
                 Notiflix.Notify.failure('We are sorry, but you have reached the end of search results.')
                 }
-                if(totalHits< per_Page){
+                if(data.totalHits< 40){
                   loadMoreBtn.classList.add('is-hidden')
                   Notiflix.Notify.failure('We are sorry, but you have reached the end of search results.')
                 }
