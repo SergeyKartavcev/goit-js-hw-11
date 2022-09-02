@@ -9,7 +9,7 @@
         q: query,
         image_type: 'photo',
         orientation: 'horizontal',
-        safesearch: 'true',
+        safesearch: true,
         page: page,
     };
  const response = await axios.get('/', {params})

@@ -9,13 +9,13 @@ import {loadMoreBtn, page, perPage,query} from "./refs"
         .then(({ data }) => {
             if (data.totalHits === 0) {
                 loadMoreBtn.classList.add('is-hidden')
-               
+                Notiflix.Notify.failure('We are sorry, but you have reached the end of search results.')
             } else {
              
               renderMarkup(data.hits)
                  if (data.totalHits > perPage) {
-                    loadMoreBtn.classList.add('is-hidden')
-                    Notiflix.Notify.failure('We are sorry, but you have reached the end of search results.')
+                    // loadMoreBtn.classList.add('is-hidden')
+                   
                                          }
                 }
           })

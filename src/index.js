@@ -8,11 +8,14 @@ import onLoadMore from './js/onLoadMore'
 const lightbox = new SimpleLightbox('.gallery a').refresh();
 searchForm.addEventListener('submit', onSearchForm);
 
+
+let newSerchQuery = "";
+
 function onSearchForm(e) {
   e.preventDefault();
   page = 1;
   query = e.currentTarget.searchQuery.value.trim();
-  gallery.innerHTML = '';
+ 
  
   
   if (query === '') {
@@ -24,12 +27,13 @@ function onSearchForm(e) {
 
   fetchImages(query, page)
     .then(({ data }) => {
+      
       if (data.totalHits === 0) {
         Notiflix.Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
         );
       } else {
-       
+        gallery.innerHTML = '';
         renderMarkup(data.hits);
         lightbox.refresh();
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
@@ -37,9 +41,12 @@ function onSearchForm(e) {
         if (data.totalHits > perPage) {
           loadMoreBtn.classList.remove('is-hidden');
         }
+       
       }
     })
     .catch(error => console.log(error));
 }
 
 loadMoreBtn.addEventListener('click', onLoadMore)
+
+ 

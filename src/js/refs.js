@@ -4,4 +4,5 @@ const loadMoreBtn = document.querySelector('.load-more');
 let page = 1;
 let perPage = 40;
 let query = "";
-export {searchForm,gallery,loadMoreBtn,page,perPage,query}
+let currentHits = 0;
+export {searchForm,gallery,loadMoreBtn,page,perPage,query,currentHits}
