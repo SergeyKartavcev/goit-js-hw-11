@@ -7,13 +7,13 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more');
-// import { searchForm, gallery, loadMoreBtn, page, perPage } from './js/refs';
+
 
 const lightbox = new SimpleLightbox('.gallery a').refresh();
 
 searchForm.addEventListener('submit', onSearchForm);
 
-// let newSerchQuery = "";
+ 
 let page = 1;
 let per_Page = 40;
 let query = "";
@@ -29,11 +29,8 @@ function onSearchForm(e) {
     );
     return;
   }
-if (newSerchQuery===e.currentTarget.searchQuery.value.trim()){
-  Notiflix.Notify.failure("dkwwcwem")
-  return
-}
-newSerchQuery===e.currentTarget.searchQuery.value.trim()
+
+
   fetchImages(query, page, per_Page)
     .then(({ data }) => {
       if (data.totalHits === 0) {
@@ -45,7 +42,13 @@ newSerchQuery===e.currentTarget.searchQuery.value.trim()
         renderMarkup(data.hits);
         lightbox.refresh();
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-        
+        // newSerchQuery = e.currentTarget.elements.value.trim();
+ 
+        if (newSerchQuery===query){
+          Notiflix.Notify.failure("dkwwcwem")
+          return
+        }
+
         if (data.totalHits > 40) {
           loadMoreBtn.classList.remove('is-hidden');
         }
@@ -59,8 +62,6 @@ newSerchQuery===e.currentTarget.searchQuery.value.trim()
 
  function onLoadMore(){
  page += 1
-     
-       
         fetchImages(query, page, per_Page)
             .then(({ data }) => {
               renderMarkup(data.hits)
