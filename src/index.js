@@ -3,34 +3,28 @@ import renderMarkup from './js/renderMarkup';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-
-const searchForm = document.querySelector('#search-form');
-const gallery = document.querySelector('.gallery');
-const loadMoreBtn = document.querySelector('.load-more');
+import {searchForm, gallery, loadMoreBtn} from "./js/refs"
+import { variables } from './js/fetch-images';
 
 
 const lightbox = new SimpleLightbox('.gallery a').refresh();
 
 searchForm.addEventListener('submit', onSearchForm);
 
- 
-let page = 1;
-let per_Page = 40;
-let query = "";
+
 
 function onSearchForm(e) {
   e.preventDefault();
-  page = 1;
-  query = e.currentTarget.searchQuery.value.trim();
-
-  if (query === '') {
+  variables.page = 1;
+  variables.query = e.currentTarget.searchQuery.value.trim();
+  if (variables.query === '') {
     Notiflix.Notify.failure(
       'The search string cannot be empty. Please specify your search query.'
     );
     return;
   }
 
-  fetchImages(query, page, per_Page)
+  fetchImages(variables.query, variables.page, variables.per_page)
     .then(({ data }) => {
       if (data.totalHits === 0) {
         Notiflix.Notify.failure(
@@ -50,26 +44,26 @@ function onSearchForm(e) {
        
       }
     })
-    .catch(error => Notiflix.Notify.error(error));
+    .catch(error => Notiflix.Notify.warning(error));
 }
 
 
 
 
  function onLoadMore(){
- page += 1
-        fetchImages(query, page, per_Page)
+  variables.page += 1
+        fetchImages(variables.query, variables.page, variables.per_page)
             .then(({ data }) => {
               renderMarkup(data.hits)
             lightbox.refresh()
         
-        const totalPages = Math.ceil(data.totalHits / per_Page)
-                if (page > totalPages) {
+        const totalPages = Math.ceil(data.totalHits / variables.per_page)
+                if (variables.page > totalPages) {
                 loadMoreBtn.classList.add('is-hidden')
                 Notiflix.Notify.failure('We are sorry, but you have reached the end of search results.')
                 }
             })
-    .catch(error => Notiflix.Notify.error (error))
+    .catch(error => Notiflix.Notify.warning (error))
 }
 
  loadMoreBtn.addEventListener('click', onLoadMore)
