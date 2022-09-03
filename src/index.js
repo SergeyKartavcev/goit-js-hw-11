@@ -3,15 +3,12 @@ import renderMarkup from './js/renderMarkup';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import {searchForm, gallery, loadMoreBtn} from "./js/refs"
+import { searchForm, gallery, loadMoreBtn } from './js/refs';
 import { variables } from './js/fetch-images';
-
 
 const lightbox = new SimpleLightbox('.gallery a').refresh();
 
 searchForm.addEventListener('submit', onSearchForm);
-
-
 
 function onSearchForm(e) {
   e.preventDefault();
@@ -32,39 +29,42 @@ function onSearchForm(e) {
         );
       } else {
         gallery.innerHTML = '';
+        e.target.reset();
         renderMarkup(data.hits);
         lightbox.refresh();
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-        
-      
+
         if (data.totalHits > 40) {
           loadMoreBtn.classList.remove('is-hidden');
         }
-       
-       
       }
     })
     .catch(error => Notiflix.Notify.warning(error));
 }
 
+function onLoadMore() {
+  variables.page += 1;
+  fetchImages(variables.query, variables.page, variables.per_page)
+    .then(({ data }) => {
+      renderMarkup(data.hits);
+      lightbox.refresh();
 
-
-
- function onLoadMore(){
-  variables.page += 1
-        fetchImages(variables.query, variables.page, variables.per_page)
-            .then(({ data }) => {
-              renderMarkup(data.hits)
-            lightbox.refresh()
-        
-        const totalPages = Math.ceil(data.totalHits / variables.per_page)
-                if (variables.page > totalPages) {
-                loadMoreBtn.classList.add('is-hidden')
-                Notiflix.Notify.failure('We are sorry, but you have reached the end of search results.')
-                }
-            })
-    .catch(error => Notiflix.Notify.warning (error))
+      const totalPages = Math.ceil(data.totalHits / variables.per_page);
+      if (variables.page > totalPages) {
+        loadMoreBtn.classList.add('is-hidden');
+         loadMoreBtn.classList.add('is-hidden');
+          Notiflix.Notify.failure(
+            'We are sorry, but you have reached the end of search results.'
+          );
+        if (data.totalHits <= variables.per_page){
+          loadMoreBtn.classList.add('is-hidden');
+          Notiflix.Notify.failure(
+            'We are sorry, but you have reached the end of search results.'
+          );
+        }
+      }
+    })
+    .catch(error => Notiflix.Notify.warning(error));
 }
 
- loadMoreBtn.addEventListener('click', onLoadMore)
-
+loadMoreBtn.addEventListener('click', onLoadMore);
