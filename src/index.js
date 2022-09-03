@@ -19,7 +19,7 @@ function onSearchForm(e) {
     return;
   }
   if (newserchQuery === variables.query) {
-    Notiflix.Notify.failure('sdfkjhfjakef');
+    Notiflix.Notify.failure('Please enter new query');
     return;
   }
 
