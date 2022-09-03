@@ -50,7 +50,7 @@ function onSearchForm(e) {
        
       }
     })
-    .catch(error => console.log(error));
+    .catch(error => Notiflix.Notify.error(error));
 }
 
 
@@ -63,16 +63,13 @@ function onSearchForm(e) {
               renderMarkup(data.hits)
             lightbox.refresh()
         
-        const totalPages = Math.ceil(data.totalHits / perPage)
+        const totalPages = Math.ceil(data.totalHits / per_Page)
                 if (page > totalPages) {
-                
                 loadMoreBtn.classList.add('is-hidden')
-            
-
                 Notiflix.Notify.failure('We are sorry, but you have reached the end of search results.')
                 }
             })
-    .catch(error => (error))
+    .catch(error => Notiflix.Notify.error (error))
 }
 
  loadMoreBtn.addEventListener('click', onLoadMore)
